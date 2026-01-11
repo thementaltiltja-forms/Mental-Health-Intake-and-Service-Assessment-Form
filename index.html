@@ -1,58 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mental Health Intake and Service Triage Assessment</title>
-
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-(function () {
-  emailjs.init("Q2ORYrQi3dYLLTYYg");
-})();
-</script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Initial Client Assessment & Service Level Evaluation</title>
 
 <style>
-body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 20px;}
-.container { max-width: 900px; margin:auto; background:#fff; padding:25px; border-radius:8px;}
-h1, h2 { text-align:center;}
-fieldset { margin-bottom:25px; padding:20px; border:1px solid #ccc; }
-legend { font-weight:bold;}
-label { display:block; margin-top:12px;}
-input, textarea { width:100%; padding:10px; margin-top:5px;}
-.radio-group { margin-top:8px; }
-.radio-group label { margin-right:15px; font-weight:normal;}
-button { margin-top:20px; padding:15px; width:100%; background:#2c3e50; color:white; border:none; font-size:16px;}
-button:hover { background:#1a252f;}
-.small { font-size:0.9em; color:#444;}
+:root{
+  /* Brand colors */
+  --turquoise:#2bb3a3;
+  --turquoise-soft:#e6f6f3;
+
+  --purple:#6b5ca5;
+  --purple-soft:#f1eef9;
+
+  --gold:#c9a24d;
+  --gold-soft:#fbf5e6;
+
+  /* Neutrals */
+  --bg-main:#f7faf9;
+  --card-bg:#ffffff;
+  --border-soft:#dde7e4;
+  --text-main:#2f3e46;
+  --text-muted:#6c7a80;
+
+  --danger:#b84a4a;
+
+  --font-family:'Segoe UI','Roboto','Helvetica Neue',Arial,sans-serif;
+}
+
+body{
+  font-family:var(--font-family);
+  line-height:1.6;
+  color:var(--text-main);
+  background:linear-gradient(180deg,#f3fbf9,#f9f7fc);
+  margin:0;
+}
+
+.container{
+  max-width:900px;
+  margin:30px auto;
+  padding:30px;
+  background:var(--card-bg);
+  border-radius:14px;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+}
+
+/* Header */
+header{
+  text-align:center;
+  border-bottom:3px solid var(--turquoise);
+  padding-bottom:20px;
+  margin-bottom:35px;
+}
+
+header h1{
+  color:var(--purple);
+  margin:0;
+}
+
+header p{
+  color:var(--text-muted);
+  font-size:.95em;
+}
+
+/* Sections */
+fieldset{
+  border:1px solid var(--border-soft);
+  border-radius:12px;
+  padding:25px;
+  margin-bottom:35px;
+  background:var(--bg-main);
+}
+
+legend{
+  padding:0 12px;
+  font-size:1.3em;
+  font-weight:600;
+  color:var(--purple);
+}
+
+label{
+  font-weight:600;
+  color:var(--text-main);
+}
+
+.form-group{
+  margin-bottom:18px;
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+
+/* Inputs */
+input,
+textarea{
+  padding:12px;
+  border-radius:6px;
+  border:1px solid var(--border-soft);
+  font-size:1em;
+  transition:.25s ease;
+}
+
+input:focus,
+textarea:focus{
+  outline:none;
+  border-color:var(--turquoise);
+  box-shadow:0 0 0 3px rgba(43,179,163,.15);
+}
+
+textarea{
+  resize:vertical;
+}
+
+/* Practitioner note */
+.practitioner-note{
+  background:var(--turquoise-soft);
+  border-left:5px solid var(--turquoise);
+  padding:14px 18px;
+  border-radius:8px;
+  color:var(--text-muted);
+  font-size:.9em;
+  margin:20px 0;
+}
+
+/* Questions */
+.question-block{
+  margin-bottom:22px;
+  padding-bottom:15px;
+  border-bottom:1px dashed var(--border-soft);
+}
+
+.radio-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-top:8px;
+}
+
+.radio-group label{
+  font-weight:normal;
+}
+
+/* Scoring */
+.scoring-section{
+  background:linear-gradient(135deg,var(--purple-soft),var(--turquoise-soft));
+  padding:30px;
+  border-radius:16px;
+  margin-top:40px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th{
+  background:var(--purple);
+  color:#fff;
+  padding:12px;
+}
+
+td{
+  padding:12px;
+  border:1px solid var(--border-soft);
+}
+
+.total-score{
+  font-size:1.6em;
+  font-weight:bold;
+  text-align:right;
+  color:var(--gold);
+}
+
+/* Rubric tiers */
+.rubric-tier-1{background:var(--turquoise-soft);}
+.rubric-tier-2{background:var(--gold-soft);}
+.rubric-tier-3{background:#fdeaea;}
+
+/* Risk */
+.risk-warning{
+  background:var(--danger);
+  color:#fff;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+}
+
+/* Footer */
+footer{
+  text-align:center;
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid var(--border-soft);
+  font-size:.8em;
+  color:var(--text-muted);
+}
 </style>
 </head>
-<body>
 
+<body>
 <div class="container">
+
 <h1>MENTAL HEALTH INTAKE AND SERVICE TRIAGE ASSESSMENT</h1>
-<p class="small" style="text-align:center;">For Initial Consultation Use Only. This is not a diagnostic tool; it guides service placement.</p>
+<p class="small" style="text-align:center;">
+For Initial Consultation Use Only. This is not a diagnostic tool; it guides service placement.
+</p>
 
 <form id="mentalHealthForm">
 
 <!-- SECTION 1 -->
 <fieldset>
 <legend>SECTION 1: BASIC INFORMATION</legend>
-<label>Client Name:</label><input type="text" name="client_name" required>
-<label>Age:</label><input type="text" name="age">
-<label>Date:</label><input type="date" name="assessment_date">
-<label>Referred by:</label><input type="text" name="referred_by">
-<label>Consultation Type:</label><input type="text" name="consultation_type" value="Free Assessment">
+
+<label>Client Name</label>
+<input name="client_name" required>
+
+<label>Age</label>
+<input name="age">
+
+<label>Date</label>
+<input type="date" name="assessment_date">
+
+<label>Referred By</label>
+<input name="referred_by">
+
+<label>Consultation Type</label>
+<input name="consultation_type" value="Free Assessment">
 </fieldset>
 
 <!-- SECTION 2 -->
 <fieldset>
-<legend>SECTION 2: CURRENT MENTAL STATE (Subtotal Max: 60)</legend>
-<p class="small">Scale: 0 = Not at all, 1 = Several days, 2 = More than half the days, 3 = Nearly every day.</p>
+<legend>SECTION 2: CURRENT MENTAL STATE</legend>
+<p class="small">Scale: 0 = Not at all, 1 = Several days, 2 = More than half the days, 3 = Nearly every day</p>
 
 <script>
-const s2 = [
+const mentalQuestions = [
 "Feeling sad, empty, or hopeless",
 "Excessive worry or anxiety",
 "Difficulty concentrating or focusing",
@@ -64,142 +253,150 @@ const s2 = [
 "Negative self-talk or self-blame",
 "Feeling disconnected from others",
 "Somatic complaints",
-"Intrusive thoughts or unwanted memories",
+"Intrusive thoughts",
 "Sudden or extreme mood swings",
 "Feelings of guilt or worthlessness",
 "Panic sensations",
 "Social avoidance or withdrawal",
 "Difficulty with simple decisions",
 "Restlessness or physical agitation",
-"Increased substance use or escapist behaviors",
-"Feelings of impending doom or dread"
+"Increased substance use",
+"Feelings of impending doom"
 ];
 </script>
-<div id="section2"></div>
+
+<div id="mental-state"></div>
+
 </fieldset>
 
 <!-- SECTION 3 -->
 <fieldset>
-<legend>SECTION 3: FUNCTIONAL IMPACT (Subtotal Max: 30)</legend>
-<p class="small">Scale: 0 = No impact, 1 = Mild, 2 = Moderate, 3 = Severe.</p>
+<legend>SECTION 3: FUNCTIONAL IMPACT</legend>
+
 <script>
-const s3 = [
+const functionalQuestions = [
 "Work or school performance",
 "Relationships",
 "Self-care and daily routines",
 "Decision-making",
 "Emotional regulation",
 "Physical health",
-"Social/Leisure activities",
-"Financial/Responsibilities",
+"Social/leisure activities",
+"Financial responsibilities",
 "Family dynamics",
 "Overall quality of life"
 ];
 </script>
-<div id="section3"></div>
+
+<div id="functional-impact"></div>
+
 </fieldset>
 
 <!-- SECTION 4 -->
 <fieldset>
-<legend>SECTION 4: COPING AND SUPPORT (Subtotal Max: 8)</legend>
-<p class="small">Yes = 0, No = 1.</p>
+<legend>SECTION 4: COPING AND SUPPORT</legend>
+
 <script>
-const s4 = [
-"Do you have healthy coping strategies?",
-"Do you have emotional support from others?",
-"Do you feel in control of your emotions most days?",
-"Have you sought help before?",
-"Do you have a safe living environment?",
-"Do you have access to basic needs (food, shelter)?",
-"Do you feel able to set healthy boundaries with others?",
-"Do you have a sense of purpose or meaning in your life?"
+const copingQuestions = [
+"Healthy coping strategies",
+"Emotional support from others",
+"Control of emotions",
+"Sought help before",
+"Safe living environment",
+"Access to basic needs",
+"Ability to set boundaries",
+"Sense of purpose"
 ];
 </script>
-<div id="section4"></div>
+
+<div id="coping-support"></div>
+
 </fieldset>
 
 <!-- SECTION 5 -->
 <fieldset>
-<legend>SECTION 5: RISK SCREENING (Subtotal Max: 18)</legend>
-<p class="small">If "Yes," explore gently and document. Yes = 3, No = 0.</p>
+<legend>SECTION 5: RISK SCREENING</legend>
+
 <script>
-const s5 = [
+const riskQuestions = [
 "Thoughts of harming yourself",
 "Thoughts of harming others",
 "Feeling unable to keep yourself safe",
-"History of severe mental health diagnosis",
-"History of psychiatric hospitalizations",
-"Recent significant trauma or loss"
+"History of severe diagnosis",
+"History of psychiatric hospitalization",
+"Recent trauma or loss"
 ];
 </script>
-<div id="section5"></div>
+
+<div id="risk-screening"></div>
+
 </fieldset>
 
-<!-- Clinical Notes -->
+<!-- CLINICAL NOTES -->
 <fieldset>
 <legend>CLINICAL NOTES (For Coach Use Only)</legend>
-<label>Observed mood:</label><input name="observed_mood">
-<label>Affect:</label><input name="affect">
-<label>Communication style:</label><input name="communication_style">
-<label>Key stressors:</label><textarea name="key_stressors"></textarea>
-<label>Protective factors:</label><textarea name="protective_factors"></textarea>
+
+<label>Observed Mood</label>
+<input name="mood">
+
+<label>Affect</label>
+<input name="affect">
+
+<label>Communication Style</label>
+<input name="communication_style">
+
+<label>Key Stressors</label>
+<textarea name="stressors"></textarea>
+
+<label>Protective Factors</label>
+<textarea name="protective_factors"></textarea>
 </fieldset>
 
-<!-- Client Agreement -->
+<!-- AGREEMENT -->
 <fieldset>
 <legend>CLIENT AGREEMENT</legend>
-<p class="small">I understand this assessment is not a diagnosis and is used to guide service recommendations.</p>
-<label>Client Signature:</label><input name="client_signature" required>
+
+<p class="small">
+I understand this assessment is not a diagnosis and is used to guide service recommendations.
+</p>
+
+<label>Client Signature</label>
+<input name="signature" required>
 </fieldset>
 
-<button type="submit">Submit Assessment</button>
+<button type="submit">SUBMIT ASSESSMENT</button>
 
 </form>
 </div>
 
 <script>
-// Render Section 2
-const sec2div = document.getElementById("section2");
-s2.forEach((q,i) => {
-  sec2div.innerHTML += `<label>${q}</label>
-  <div class="radio-group">
-    <label><input type="radio" name="m${i+1}" value="0">0</label>
-    <label><input type="radio" name="m${i+1}" value="1">1</label>
-    <label><input type="radio" name="m${i+1}" value="2">2</label>
-    <label><input type="radio" name="m${i+1}" value="3">3</label>
-  </div>`;
+function renderScales(containerId, questions, prefix) {
+  const container = document.getElementById(containerId);
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.innerHTML = `<label>${q}</label>
+      <div class="radio-group">
+        ${[0,1,2,3].map(v => `<label><input type="radio" name="${prefix}${i+1}" value="${v}">${v}</label>`).join("")}
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+renderScales("mental-state", mentalQuestions, "m");
+renderScales("functional-impact", functionalQuestions, "f");
+
+const copingDiv = document.getElementById("coping-support");
+copingQuestions.forEach((q,i)=>{
+  copingDiv.innerHTML += `<label>${q}</label>
+  <label><input type="radio" name="c${i+1}" value="0">Yes</label>
+  <label><input type="radio" name="c${i+1}" value="1">No</label>`;
 });
 
-// Render Section 3
-const sec3div = document.getElementById("section3");
-s3.forEach((q,i) => {
-  sec3div.innerHTML += `<label>${q}</label>
-  <div class="radio-group">
-    <label><input type="radio" name="f${i+1}" value="0">0</label>
-    <label><input type="radio" name="f${i+1}" value="1">1</label>
-    <label><input type="radio" name="f${i+1}" value="2">2</label>
-    <label><input type="radio" name="f${i+1}" value="3">3</label>
-  </div>`;
-});
-
-// Render Section 4
-const sec4div = document.getElementById("section4");
-s4.forEach((q,i) => {
-  sec4div.innerHTML += `<label>${q}</label>
-  <div class="radio-group">
-    <label><input type="radio" name="c${i+1}" value="0">Yes</label>
-    <label><input type="radio" name="c${i+1}" value="1">No</label>
-  </div>`;
-});
-
-// Render Section 5
-const sec5div = document.getElementById("section5");
-s5.forEach((q,i) => {
-  sec5div.innerHTML += `<label>${q}</label>
-  <div class="radio-group">
-    <label><input type="radio" name="r${i+1}" value="0">No</label>
-    <label><input type="radio" name="r${i+1}" value="3">Yes</label>
-  </div>`;
+const riskDiv = document.getElementById("risk-screening");
+riskQuestions.forEach((q,i)=>{
+  riskDiv.innerHTML += `<label>${q}</label>
+  <label><input type="radio" name="r${i+1}" value="0">No</label>
+  <label><input type="radio" name="r${i+1}" value="3">Yes</label>`;
 });
 </script>
 
@@ -217,7 +414,7 @@ document.getElementById("mentalHealthForm").addEventListener("submit", function(
       this.reset();
     },
     (error) => {
-      alert("Submission failed. Try again.");
+      alert("Submission failed.");
       console.error(error);
     }
   );
