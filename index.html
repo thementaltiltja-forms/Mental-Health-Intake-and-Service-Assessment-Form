@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mental Health Intake Assessment</title>
+<title>Mental Health Intake and Service Triage Assessment</title>
 
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -14,93 +14,194 @@
 </script>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  margin: 0;
-  padding: 20px;
-}
-.container {
-  max-width: 900px;
-  margin: auto;
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 8px;
-}
-h1 {
-  text-align: center;
-}
-fieldset {
-  margin-bottom: 25px;
-  padding: 20px;
-}
-label {
-  display: block;
-  margin-top: 12px;
-  font-weight: bold;
-}
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-}
-button {
-  background: #2c3e50;
-  color: #ffffff;
-  border: none;
-  padding: 15px;
-  width: 100%;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-button:hover {
-  background: #1a252f;
-}
+body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 20px;}
+.container { max-width: 900px; margin:auto; background:#fff; padding:25px; border-radius:8px;}
+h1, h2 { text-align:center;}
+fieldset { margin-bottom:25px; padding:20px; border:1px solid #ccc; }
+legend { font-weight:bold;}
+label { display:block; margin-top:12px;}
+input, textarea { width:100%; padding:10px; margin-top:5px;}
+.radio-group { margin-top:8px; }
+.radio-group label { margin-right:15px; font-weight:normal;}
+button { margin-top:20px; padding:15px; width:100%; background:#2c3e50; color:white; border:none; font-size:16px;}
+button:hover { background:#1a252f;}
+.small { font-size:0.9em; color:#444;}
 </style>
 </head>
-
 <body>
-<div class="container">
 
-<h1>Mental Health Intake Assessment</h1>
+<div class="container">
+<h1>MENTAL HEALTH INTAKE AND SERVICE TRIAGE ASSESSMENT</h1>
+<p class="small" style="text-align:center;">For Initial Consultation Use Only. This is not a diagnostic tool; it guides service placement.</p>
 
 <form id="mentalHealthForm">
 
+<!-- SECTION 1 -->
 <fieldset>
-<legend>Client Information</legend>
-
-<label>Client Name</label>
-<input type="text" name="client_name" required>
-
-<label>Age</label>
-<input type="text" name="age">
-
-<label>Assessment Date</label>
-<input type="date" name="assessment_date">
+<legend>SECTION 1: BASIC INFORMATION</legend>
+<label>Client Name:</label><input type="text" name="client_name" required>
+<label>Age:</label><input type="text" name="age">
+<label>Date:</label><input type="date" name="assessment_date">
+<label>Referred by:</label><input type="text" name="referred_by">
+<label>Consultation Type:</label><input type="text" name="consultation_type" value="Free Assessment">
 </fieldset>
 
+<!-- SECTION 2 -->
 <fieldset>
-<legend>Clinical Notes</legend>
+<legend>SECTION 2: CURRENT MENTAL STATE (Subtotal Max: 60)</legend>
+<p class="small">Scale: 0 = Not at all, 1 = Several days, 2 = More than half the days, 3 = Nearly every day.</p>
 
-<label>Observed Mood</label>
-<input type="text" name="mood">
-
-<label>Key Stressors</label>
-<textarea name="stressors"></textarea>
+<script>
+const s2 = [
+"Feeling sad, empty, or hopeless",
+"Excessive worry or anxiety",
+"Difficulty concentrating or focusing",
+"Feeling overwhelmed or emotionally stuck",
+"Loss of interest or motivation",
+"Irritability or emotional outbursts",
+"Difficulty sleeping or resting",
+"Fatigue or low energy",
+"Negative self-talk or self-blame",
+"Feeling disconnected from others",
+"Somatic complaints",
+"Intrusive thoughts or unwanted memories",
+"Sudden or extreme mood swings",
+"Feelings of guilt or worthlessness",
+"Panic sensations",
+"Social avoidance or withdrawal",
+"Difficulty with simple decisions",
+"Restlessness or physical agitation",
+"Increased substance use or escapist behaviors",
+"Feelings of impending doom or dread"
+];
+</script>
+<div id="section2"></div>
 </fieldset>
 
+<!-- SECTION 3 -->
 <fieldset>
-<legend>Client Agreement</legend>
+<legend>SECTION 3: FUNCTIONAL IMPACT (Subtotal Max: 30)</legend>
+<p class="small">Scale: 0 = No impact, 1 = Mild, 2 = Moderate, 3 = Severe.</p>
+<script>
+const s3 = [
+"Work or school performance",
+"Relationships",
+"Self-care and daily routines",
+"Decision-making",
+"Emotional regulation",
+"Physical health",
+"Social/Leisure activities",
+"Financial/Responsibilities",
+"Family dynamics",
+"Overall quality of life"
+];
+</script>
+<div id="section3"></div>
+</fieldset>
 
-<label>Client Signature</label>
-<input type="text" name="signature" required>
+<!-- SECTION 4 -->
+<fieldset>
+<legend>SECTION 4: COPING AND SUPPORT (Subtotal Max: 8)</legend>
+<p class="small">Yes = 0, No = 1.</p>
+<script>
+const s4 = [
+"Do you have healthy coping strategies?",
+"Do you have emotional support from others?",
+"Do you feel in control of your emotions most days?",
+"Have you sought help before?",
+"Do you have a safe living environment?",
+"Do you have access to basic needs (food, shelter)?",
+"Do you feel able to set healthy boundaries with others?",
+"Do you have a sense of purpose or meaning in your life?"
+];
+</script>
+<div id="section4"></div>
+</fieldset>
+
+<!-- SECTION 5 -->
+<fieldset>
+<legend>SECTION 5: RISK SCREENING (Subtotal Max: 18)</legend>
+<p class="small">If "Yes," explore gently and document. Yes = 3, No = 0.</p>
+<script>
+const s5 = [
+"Thoughts of harming yourself",
+"Thoughts of harming others",
+"Feeling unable to keep yourself safe",
+"History of severe mental health diagnosis",
+"History of psychiatric hospitalizations",
+"Recent significant trauma or loss"
+];
+</script>
+<div id="section5"></div>
+</fieldset>
+
+<!-- Clinical Notes -->
+<fieldset>
+<legend>CLINICAL NOTES (For Coach Use Only)</legend>
+<label>Observed mood:</label><input name="observed_mood">
+<label>Affect:</label><input name="affect">
+<label>Communication style:</label><input name="communication_style">
+<label>Key stressors:</label><textarea name="key_stressors"></textarea>
+<label>Protective factors:</label><textarea name="protective_factors"></textarea>
+</fieldset>
+
+<!-- Client Agreement -->
+<fieldset>
+<legend>CLIENT AGREEMENT</legend>
+<p class="small">I understand this assessment is not a diagnosis and is used to guide service recommendations.</p>
+<label>Client Signature:</label><input name="client_signature" required>
 </fieldset>
 
 <button type="submit">Submit Assessment</button>
 
 </form>
 </div>
+
+<script>
+// Render Section 2
+const sec2div = document.getElementById("section2");
+s2.forEach((q,i) => {
+  sec2div.innerHTML += `<label>${q}</label>
+  <div class="radio-group">
+    <label><input type="radio" name="m${i+1}" value="0">0</label>
+    <label><input type="radio" name="m${i+1}" value="1">1</label>
+    <label><input type="radio" name="m${i+1}" value="2">2</label>
+    <label><input type="radio" name="m${i+1}" value="3">3</label>
+  </div>`;
+});
+
+// Render Section 3
+const sec3div = document.getElementById("section3");
+s3.forEach((q,i) => {
+  sec3div.innerHTML += `<label>${q}</label>
+  <div class="radio-group">
+    <label><input type="radio" name="f${i+1}" value="0">0</label>
+    <label><input type="radio" name="f${i+1}" value="1">1</label>
+    <label><input type="radio" name="f${i+1}" value="2">2</label>
+    <label><input type="radio" name="f${i+1}" value="3">3</label>
+  </div>`;
+});
+
+// Render Section 4
+const sec4div = document.getElementById("section4");
+s4.forEach((q,i) => {
+  sec4div.innerHTML += `<label>${q}</label>
+  <div class="radio-group">
+    <label><input type="radio" name="c${i+1}" value="0">Yes</label>
+    <label><input type="radio" name="c${i+1}" value="1">No</label>
+  </div>`;
+});
+
+// Render Section 5
+const sec5div = document.getElementById("section5");
+s5.forEach((q,i) => {
+  sec5div.innerHTML += `<label>${q}</label>
+  <div class="radio-group">
+    <label><input type="radio" name="r${i+1}" value="0">No</label>
+    <label><input type="radio" name="r${i+1}" value="3">Yes</label>
+  </div>`;
+});
+</script>
 
 <script>
 document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
@@ -111,12 +212,12 @@ document.getElementById("mentalHealthForm").addEventListener("submit", function(
     "template_1c5x1w2",
     this
   ).then(
-    function () {
+    () => {
       alert("Assessment sent successfully.");
-      document.getElementById("mentalHealthForm").reset();
+      this.reset();
     },
-    function (error) {
-      alert("Submission failed. Please try again.");
+    (error) => {
+      alert("Submission failed. Try again.");
       console.error(error);
     }
   );
