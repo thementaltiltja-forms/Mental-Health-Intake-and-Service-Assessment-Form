@@ -1,462 +1,127 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Initial Client Assessment &amp; Service Level Evaluation</title>
-<style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --light-gray: #ecf0f1;
-            --medium-gray: #bdc3c7;
-            --dark-gray: #7f8c8d;
-            --text-color: #34495e;
-            --danger-color: #c0392b;
-            --warning-color: #f39c12;
-            --success-color: #27ae60;
-            --font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-        }
-
-        body {
-            font-family: var(--font-family);
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: #fdfdfd;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 25px;
-            background-color: #ffffff;
-            border: 1px solid var(--light-gray);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-        }
-
-        header {
-            text-align: center;
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        header h1 {
-            color: var(--primary-color);
-            font-size: 2em;
-            margin: 0;
-        }
-
-        header p {
-            color: var(--dark-gray);
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        h2, legend {
-            font-size: 1.5em;
-            color: var(--primary-color);
-            font-weight: 600;
-            border-bottom: 1px solid var(--light-gray);
-            padding-bottom: 10px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        fieldset {
-            border: 1px solid var(--medium-gray);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            background-color: #f9f9f9;
-        }
-
-        legend {
-            padding: 0 10px;
-            width: auto;
-            border-bottom: none;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--primary-color);
-        }
-
-        input[type="text"],
-        input[type="date"],
-        input[type="email"],
-        input[type="tel"],
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--medium-gray);
-            border-radius: 4px;
-            font-size: 1em;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-
-        input[type="text"]:focus,
-        input[type="date"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-        }
-
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .practitioner-note {
-            font-style: italic;
-            color: var(--dark-gray);
-            background-color: #eaf4fb;
-            border-left: 4px solid var(--secondary-color);
-            padding: 10px 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        .question-block {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed var(--light-gray);
-        }
-        .question-block:last-child {
-            border-bottom: none;
-        }
-
-        .radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .radio-group label {
-            font-weight: normal;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .radio-group input[type="radio"] {
-            margin-right: 8px;
-        }
-
-        .scoring-section {
-            background-color: var(--light-gray);
-            padding: 25px;
-            border-radius: 8px;
-            margin-top: 40px;
-        }
-
-        .scoring-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .scoring-table th, .scoring-table td {
-            border: 1px solid var(--medium-gray);
-            padding: 12px;
-            text-align: left;
-        }
-
-        .scoring-table th {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .scoring-table td:last-child {
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .total-score {
-            font-size: 1.5em;
-            font-weight: bold;
-            text-align: right;
-            color: var(--secondary-color);
-        }
-
-        .rubric-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .rubric-table th, .rubric-table td {
-            border: 1px solid var(--medium-gray);
-            padding: 15px;
-            vertical-align: top;
-        }
-
-        .rubric-table th {
-            background-color: var(--dark-gray);
-            color: white;
-            width: 25%;
-        }
-        
-        .rubric-tier-1 { background-color: #e8f5e9; } /* Light Green */
-        .rubric-tier-2 { background-color: #fff3e0; } /* Light Orange */
-        .rubric-tier-3 { background-color: #ffebee; } /* Light Red */
-
-        .risk-warning {
-            background-color: var(--danger-color);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .risk-warning p {
-            margin: 0;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--light-gray);
-            font-size: 0.8em;
-            color: var(--dark-gray);
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-<header>
-<h1>MENTAL HEALTH INTAKE AND SERVICE TRIAGE ASSESSMENT</h1>
-<p>For Initial Consultation Use Only. This is not a diagnostic tool; it guides service placement.</p>
-</header>
-<main>
-<form>
-<fieldset>
-<legend>SECTION 1: BASIC INFORMATION</legend>
-<div class="form-group-grid">
-<div class="form-group">
-<label for="client-name">Client Name:</label>
-<input id="client-name" name="client-name" type="text"/>
-</div>
-<div class="form-group">
-<label for="age">Age:</label>
-<input id="age" name="age" type="text"/>
-</div>
-<div class="form-group">
-<label for="assessment-date">Date:</label>
-<input id="assessment-date" name="assessment-date" type="date" value="2026-01-10"/>
-</div>
-<div class="form-group">
-<label for="referred-by">Referred by:</label>
-<input id="referred-by" name="referred-by" type="text"/>
-</div>
-</div>
-<div class="form-group">
-<label for="consultation-type">Consultation Type:</label>
-<input id="consultation-type" name="consultation-type" readonly="" type="text" value="Free Assessment"/>
-</div>
-</fieldset>
-<fieldset>
-<legend>SECTION 2: CURRENT MENTAL STATE (Subtotal Max: 60)</legend>
-<div class="practitioner-note">Ask the client to rate how often they experienced each item in the past 2 weeks. <br/><b>Scale:</b> 0 = Not at all, 1 = Several days, 2 = More than half the days, 3 = Nearly every day.</div>
-<div class="question-block"><label>Feeling sad, empty, or hopeless</label><div class="radio-group"><label><input name="q1" type="radio" value="0"/> 0</label><label><input name="q1" type="radio" value="1"/> 1</label><label><input name="q1" type="radio" value="2"/> 2</label><label><input name="q1" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Excessive worry or anxiety</label><div class="radio-group"><label><input name="q2" type="radio" value="0"/> 0</label><label><input name="q2" type="radio" value="1"/> 1</label><label><input name="q2" type="radio" value="2"/> 2</label><label><input name="q2" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Difficulty concentrating or focusing</label><div class="radio-group"><label><input name="q3" type="radio" value="0"/> 0</label><label><input name="q3" type="radio" value="1"/> 1</label><label><input name="q3" type="radio" value="2"/> 2</label><label><input name="q3" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Feeling overwhelmed or emotionally stuck</label><div class="radio-group"><label><input name="q4" type="radio" value="0"/> 0</label><label><input name="q4" type="radio" value="1"/> 1</label><label><input name="q4" type="radio" value="2"/> 2</label><label><input name="q4" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Loss of interest or motivation</label><div class="radio-group"><label><input name="q5" type="radio" value="0"/> 0</label><label><input name="q5" type="radio" value="1"/> 1</label><label><input name="q5" type="radio" value="2"/> 2</label><label><input name="q5" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Irritability or emotional outbursts</label><div class="radio-group"><label><input name="q6" type="radio" value="0"/> 0</label><label><input name="q6" type="radio" value="1"/> 1</label><label><input name="q6" type="radio" value="2"/> 2</label><label><input name="q6" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Difficulty sleeping or resting</label><div class="radio-group"><label><input name="q7" type="radio" value="0"/> 0</label><label><input name="q7" type="radio" value="1"/> 1</label><label><input name="q7" type="radio" value="2"/> 2</label><label><input name="q7" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Fatigue or low energy</label><div class="radio-group"><label><input name="q8" type="radio" value="0"/> 0</label><label><input name="q8" type="radio" value="1"/> 1</label><label><input name="q8" type="radio" value="2"/> 2</label><label><input name="q8" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Negative self-talk or self-blame</label><div class="radio-group"><label><input name="q9" type="radio" value="0"/> 0</label><label><input name="q9" type="radio" value="1"/> 1</label><label><input name="q9" type="radio" value="2"/> 2</label><label><input name="q9" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Feeling disconnected from others</label><div class="radio-group"><label><input name="q10" type="radio" value="0"/> 0</label><label><input name="q10" type="radio" value="1"/> 1</label><label><input name="q10" type="radio" value="2"/> 2</label><label><input name="q10" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Somatic complaints (e.g., headaches, stomach issues)</label><div class="radio-group"><label><input name="q11" type="radio" value="0"/> 0</label><label><input name="q11" type="radio" value="1"/> 1</label><label><input name="q11" type="radio" value="2"/> 2</label><label><input name="q11" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Intrusive thoughts or unwanted memories</label><div class="radio-group"><label><input name="q12" type="radio" value="0"/> 0</label><label><input name="q12" type="radio" value="1"/> 1</label><label><input name="q12" type="radio" value="2"/> 2</label><label><input name="q12" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Sudden or extreme mood swings</label><div class="radio-group"><label><input name="q13" type="radio" value="0"/> 0</label><label><input name="q13" type="radio" value="1"/> 1</label><label><input name="q13" type="radio" value="2"/> 2</label><label><input name="q13" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Feelings of guilt or worthlessness</label><div class="radio-group"><label><input name="q14" type="radio" value="0"/> 0</label><label><input name="q14" type="radio" value="1"/> 1</label><label><input name="q14" type="radio" value="2"/> 2</label><label><input name="q14" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Panic sensations (e.g., racing heart, shortness of breath)</label><div class="radio-group"><label><input name="q15" type="radio" value="0"/> 0</label><label><input name="q15" type="radio" value="1"/> 1</label><label><input name="q15" type="radio" value="2"/> 2</label><label><input name="q15" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Social avoidance or withdrawal</label><div class="radio-group"><label><input name="q16" type="radio" value="0"/> 0</label><label><input name="q16" type="radio" value="1"/> 1</label><label><input name="q16" type="radio" value="2"/> 2</label><label><input name="q16" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Difficulty with simple decisions</label><div class="radio-group"><label><input name="q17" type="radio" value="0"/> 0</label><label><input name="q17" type="radio" value="1"/> 1</label><label><input name="q17" type="radio" value="2"/> 2</label><label><input name="q17" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Restlessness or physical agitation</label><div class="radio-group"><label><input name="q18" type="radio" value="0"/> 0</label><label><input name="q18" type="radio" value="1"/> 1</label><label><input name="q18" type="radio" value="2"/> 2</label><label><input name="q18" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Increased substance use or escapist behaviors</label><div class="radio-group"><label><input name="q19" type="radio" value="0"/> 0</label><label><input name="q19" type="radio" value="1"/> 1</label><label><input name="q19" type="radio" value="2"/> 2</label><label><input name="q19" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Feelings of impending doom or dread</label><div class="radio-group"><label><input name="q20" type="radio" value="0"/> 0</label><label><input name="q20" type="radio" value="1"/> 1</label><label><input name="q20" type="radio" value="2"/> 2</label><label><input name="q20" type="radio" value="3"/> 3</label></div></div>
-</fieldset>
-<fieldset>
-<legend>SECTION 3: FUNCTIONAL IMPACT (Subtotal Max: 30)</legend>
-<div class="practitioner-note">Rate how much mental health is affecting daily life. <br/><b>Scale:</b> 0 = No impact, 1 = Mild, 2 = Moderate, 3 = Severe.</div>
-<div class="question-block"><label>Work or school performance</label><div class="radio-group"><label><input name="f1" type="radio" value="0"/> 0</label><label><input name="f1" type="radio" value="1"/> 1</label><label><input name="f1" type="radio" value="2"/> 2</label><label><input name="f1" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Relationships</label><div class="radio-group"><label><input name="f2" type="radio" value="0"/> 0</label><label><input name="f2" type="radio" value="1"/> 1</label><label><input name="f2" type="radio" value="2"/> 2</label><label><input name="f2" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Self-care and daily routines</label><div class="radio-group"><label><input name="f3" type="radio" value="0"/> 0</label><label><input name="f3" type="radio" value="1"/> 1</label><label><input name="f3" type="radio" value="2"/> 2</label><label><input name="f3" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Decision-making</label><div class="radio-group"><label><input name="f4" type="radio" value="0"/> 0</label><label><input name="f4" type="radio" value="1"/> 1</label><label><input name="f4" type="radio" value="2"/> 2</label><label><input name="f4" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Emotional regulation</label><div class="radio-group"><label><input name="f5" type="radio" value="0"/> 0</label><label><input name="f5" type="radio" value="1"/> 1</label><label><input name="f5" type="radio" value="2"/> 2</label><label><input name="f5" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Physical health</label><div class="radio-group"><label><input name="f6" type="radio" value="0"/> 0</label><label><input name="f6" type="radio" value="1"/> 1</label><label><input name="f6" type="radio" value="2"/> 2</label><label><input name="f6" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Social/Leisure activities</label><div class="radio-group"><label><input name="f7" type="radio" value="0"/> 0</label><label><input name="f7" type="radio" value="1"/> 1</label><label><input name="f7" type="radio" value="2"/> 2</label><label><input name="f7" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Financial/Responsibilities</label><div class="radio-group"><label><input name="f8" type="radio" value="0"/> 0</label><label><input name="f8" type="radio" value="1"/> 1</label><label><input name="f8" type="radio" value="2"/> 2</label><label><input name="f8" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Family dynamics</label><div class="radio-group"><label><input name="f9" type="radio" value="0"/> 0</label><label><input name="f9" type="radio" value="1"/> 1</label><label><input name="f9" type="radio" value="2"/> 2</label><label><input name="f9" type="radio" value="3"/> 3</label></div></div>
-<div class="question-block"><label>Overall quality of life</label><div class="radio-group"><label><input name="f10" type="radio" value="0"/> 0</label><label><input name="f10" type="radio" value="1"/> 1</label><label><input name="f10" type="radio" value="2"/> 2</label><label><input name="f10" type="radio" value="3"/> 3</label></div></div>
-</fieldset>
-<fieldset>
-<legend>SECTION 4: COPING AND SUPPORT (Subtotal Max: 8)</legend>
-<div class="practitioner-note">Answer Yes or No. <br/><b>Scoring:</b> Yes = 0, No = 1.</div>
-<div class="question-block"><label>Do you have healthy coping strategies?</label><div class="radio-group"><label><input name="c1" type="radio" value="0"/> Yes</label><label><input name="c1" type="radio" value="1"/> No</label></div></div>
-<div class="question-block"><label>Do you have emotional support from others?</label><div class="radio-group"><label><input name="c2" type="radio" value="0"/> Yes</label><label><input name="c2" type="radio" value="1"/> No</label></div></div>
-<div class="question-block"><label>Do you feel in control of your emotions most days?</label><div class="radio-group"><label><input name="c3" type="radio" value="0"/> Yes</label><label><input name="c3" type="radio" value="1"/> No</label></div></div>
-<div class="question-block"><label>Have you sought help before?</label><div class="radio-group"><label><input name="c4" type="radio" value="0"/> Yes</label><label><input name="c4" type="radio" value="1"/> No</label></div></div>
-<div class="question-block"><label>Do you have a safe living environment?</label><div class="radio-group"><label><input name="c5" type="radio" value="0"/> Yes</label><label><input name="c5" type="radio" value="1"/> No</label></div></div>
-<div class="question-block"><label>Do you have access to basic needs (food, shelter)?</label><div class="radio-group"><label><input name="c6" type="radio" value="0"/> Yes</label><label><input name="c6" type="radio" value="1"/> No</label></div></div>
-<div class="question-block"><label>Do you feel able to set healthy boundaries with others?</label><div class="radio-group"><label><input name="c7" type="radio" value="0"/> Yes</label><label><input name="c7" type="radio" value="1"/> No</label></div></div>
-<div class="question-block"><label>Do you have a sense of purpose or meaning in your life?</label><div class="radio-group"><label><input name="c8" type="radio" value="0"/> Yes</label><label><input name="c8" type="radio" value="1"/> No</label></div></div>
-</fieldset>
-<fieldset>
-<legend>SECTION 5: RISK SCREENING (Subtotal Max: 18)</legend>
-<div class="practitioner-note">If "Yes," explore gently and document. <br/><b>Scoring:</b> Yes = 3, No = 0.</div>
-<div class="question-block"><label>Thoughts of harming yourself</label><div class="radio-group"><label><input name="r1" type="radio" value="0"/> No</label><label><input name="r1" type="radio" value="3"/> Yes</label></div></div>
-<div class="question-block"><label>Thoughts of harming others</label><div class="radio-group"><label><input name="r2" type="radio" value="0"/> No</label><label><input name="r2" type="radio" value="3"/> Yes</label></div></div>
-<div class="question-block"><label>Feeling unable to keep yourself safe</label><div class="radio-group"><label><input name="r3" type="radio" value="0"/> No</label><label><input name="r3" type="radio" value="3"/> Yes</label></div></div>
-<div class="question-block"><label>History of severe mental health diagnosis</label><div class="radio-group"><label><input name="r4" type="radio" value="0"/> No</label><label><input name="r4" type="radio" value="3"/> Yes</label></div></div>
-<div class="question-block"><label>History of psychiatric hospitalizations</label><div class="radio-group"><label><input name="r5" type="radio" value="0"/> No</label><label><input name="r5" type="radio" value="3"/> Yes</label></div></div>
-<div class="question-block"><label>Recent significant trauma or loss</label><div class="radio-group"><label><input name="r6" type="radio" value="0"/> No</label><label><input name="r6" type="radio" value="3"/> Yes</label></div></div>
-</fieldset>
-<section class="scoring-section">
-<h2>TOTAL SCORE</h2>
-<div class="practitioner-note">
-                        Add all section subtotals. Maximum Score: 116.
-                    </div>
-<table class="scoring-table">
-<thead>
-<tr>
-<th>Section</th>
-<th>Max Score</th>
-<th>Client Score</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2. Current Mental State</td>
-<td>60</td>
-<td><input name="score_s2" style="width: 60px; text-align: center;" type="number"/></td>
-</tr>
-<tr>
-<td>3. Functional Impact</td>
-<td>30</td>
-<td><input name="score_s3" style="width: 60px; text-align: center;" type="number"/></td>
-</tr>
-<tr>
-<td>4. Coping and Support</td>
-<td>8</td>
-<td><input name="score_s4" style="width: 60px; text-align: center;" type="number"/></td>
-</tr>
-<tr>
-<td>5. Risk Screening</td>
-<td>18</td>
-<td><input name="score_s5" style="width: 60px; text-align: center;" type="number"/></td>
-</tr>
-<tr>
-<td class="total-score" colspan="2">TOTAL SCORE</td>
-<td><input name="score_total" style="width: 60px; text-align: center; font-weight: bold;" type="number"/></td>
-</tr>
-</tbody>
-</table>
-<h3>SERVICE RECOMMENDATION GUIDE</h3>
-<table class="rubric-table">
-<thead>
-<tr>
-<th>Score Range</th>
-<th>Recommended Service</th>
-<th>Focus Area</th>
-</tr>
-</thead>
-<tbody>
-<tr class="rubric-tier-1">
-<th>0–25</th>
-<td><strong>COACHING</strong></td>
-<td>Client is emotionally stable and goal-oriented. Needs clarity, accountability, and skill-building.</td>
-</tr>
-<tr class="rubric-tier-2">
-<th>26–55</th>
-<td><strong>COUNSELLING</strong></td>
-<td>Moderate emotional distress. Needs emotional processing, support, and development of coping skills.</td>
-</tr>
-<tr class="rubric-tier-3">
-<th>56–85</th>
-<td><strong>COUNSELLING + PSYCHIATRIC REFERRAL</strong></td>
-<td>Significant emotional impairment. Symptoms interfere with daily functioning. Recommend therapy plus psychiatric evaluation.</td>
-</tr>
-<tr class="rubric-tier-3">
-<th>86–116</th>
-<td><strong>IMMEDIATE PSYCHIATRIC SUPPORT</strong></td>
-<td>High risk or severe symptoms. Safety concerns present. Prioritize psychiatric care before coaching or standard therapy.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<fieldset>
-<legend>CLINICAL NOTES (For Coach Use Only)</legend>
-<div class="form-group-grid">
-<div class="form-group"><label for="note-mood">Observed mood:</label><input id="note-mood" name="note-mood" type="text"/></div>
-<div class="form-group"><label for="note-affect">Affect:</label><input id="note-affect" name="note-affect" type="text"/></div>
-<div class="form-group"><label for="note-comm">Communication style:</label><input id="note-comm" name="note-comm" type="text"/></div>
-</div>
-<div class="form-group"><label for="note-stressors">Key stressors:</label><textarea id="note-stressors" name="note-stressors" rows="2"></textarea></div>
-<div class="form-group"><label for="note-protective">Protective factors:</label><textarea id="note-protective" name="note-protective" rows="2"></textarea></div>
-</fieldset>
-<fieldset>
-<legend>CLIENT AGREEMENT</legend>
-<div class="form-group">
-<p>I understand this assessment is not a diagnosis and is used to guide service recommendations.</p>
-<label for="client-signature">Client Signature:</label>
-<input id="client-signature" name="client-signature" placeholder="Type name to sign" type="text"/>
-</div>
-</fieldset>
-</form>
-</main>
-<footer>
-<p>This document contains confidential information protected by law. It is intended only for the use of the individual or entity to which it is addressed. Any review, dissemination, or copying of this document by persons other than the intended recipient is strictly prohibited.</p>
-<p>© 2026 [Your Company Name Here]. All Rights Reserved.</p>
-</footer>
-</div>
-</body></html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Skywork Generated Project</title>
-<meta name="description" content="Skywork Generated Project" />
-<meta name="author" content="Skywork" />
-<meta property="og:title" content="Skywork Generated Project" />
-<meta property="og:description" content="Skywork Generated Project" />
-<meta property="og:type" content="website" />
-<script type="module" crossorigin src="/assets/index-BS-sHF-y.js"></script>
-<link rel="stylesheet" crossorigin href="/assets/index-LRB6WzwC.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mental Health Intake Assessment</title>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function () {
+  emailjs.init("Q2ORYrQi3dYLLTYYg");
+})();
+</script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+}
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+}
+h1 {
+  text-align: center;
+}
+fieldset {
+  margin-bottom: 25px;
+  padding: 20px;
+}
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+}
+button {
+  background: #2c3e50;
+  color: #ffffff;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+button:hover {
+  background: #1a252f;
+}
+</style>
 </head>
+
 <body>
-<div id="root"></div><script type="module" src="https://static-s3.skyworkcdn.com/fe/skywork-site-assets/scripts/embed_website.min.js"></script>
+<div class="container">
+
+<h1>Mental Health Intake Assessment</h1>
+
+<form id="mentalHealthForm">
+
+<fieldset>
+<legend>Client Information</legend>
+
+<label>Client Name</label>
+<input type="text" name="client_name" required>
+
+<label>Age</label>
+<input type="text" name="age">
+
+<label>Assessment Date</label>
+<input type="date" name="assessment_date">
+</fieldset>
+
+<fieldset>
+<legend>Clinical Notes</legend>
+
+<label>Observed Mood</label>
+<input type="text" name="mood">
+
+<label>Key Stressors</label>
+<textarea name="stressors"></textarea>
+</fieldset>
+
+<fieldset>
+<legend>Client Agreement</legend>
+
+<label>Client Signature</label>
+<input type="text" name="signature" required>
+</fieldset>
+
+<button type="submit">Submit Assessment</button>
+
+</form>
+</div>
+
+<script>
+document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  emailjs.sendForm(
+    "service_wp7ldkb",
+    "template_1c5x1w2",
+    this
+  ).then(
+    function () {
+      alert("Assessment sent successfully.");
+      document.getElementById("mentalHealthForm").reset();
+    },
+    function (error) {
+      alert("Submission failed. Please try again.");
+      console.error(error);
+    }
+  );
+});
+</script>
+
 </body>
 </html>
-
