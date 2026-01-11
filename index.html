@@ -203,6 +203,39 @@ footer{
   color:var(--text-muted);
 }
 </style>
+  /* One-line Yes / No layout for Coping & Risk sections */
+.inline-question {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--medium-gray);
+}
+
+.inline-question:last-child {
+  border-bottom: none;
+}
+
+.inline-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inline-options label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: normal;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.inline-options input[type="radio"] {
+  margin-bottom: 6px;
+  transform: scale(1.1);
+}
 </head>
 
 <body>
